@@ -23,8 +23,8 @@ import MerchantMarquee from "@/components/MerchantMarquee";
 import ExchangeUniswap from "@web3icons/react/icons/exchanges/ExchangeUniswap";
 
 // TODO: replace with the real X account.
-const X_HANDLE = "@hookscards";
-const X_URL = "https://x.com/hookscards";
+const X_HANDLE = "@hooksdotcards";
+const X_URL = "https://x.com/hooksdotcards";
 
 // Faint scattered glyphs behind the hero, placed with a fixed seed so server and client match.
 const glyphs = (() => {
@@ -293,16 +293,6 @@ export default function Home() {
         </p>
       </footer>
 
-      {/* Floating chip */}
-      <a
-        href="#how"
-        className="fixed bottom-5 left-5 z-40 hidden items-center gap-3 rounded-full border border-white/10 bg-[#141414]/85 py-1.5 pl-1.5 pr-4 backdrop-blur-md transition hover:bg-panel-2 lg:flex"
-      >
-        <span className="grid h-9 w-9 place-items-center rounded-full bg-acid text-black">
-          <HookMark className="h-5 w-5" />
-        </span>
-        <span className="text-[13px] font-medium">Coming soon</span>
-      </a>
     </main>
   );
 }

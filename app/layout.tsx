@@ -19,19 +19,21 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hooks.cards"),
-  title: "hooks.cards — A debit card backed by liquidity",
+  title: "hooks.cards",
   description,
   openGraph: {
-    title: "hooks.cards — A debit card backed by liquidity",
+    title: "hooks.cards",
     description,
+    images: [{ url: "/social-preview.jpg", width: 1280, height: 426, alt: "hooks.cards app and debit card" }],
     url: "/",
     siteName: "hooks.cards",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "hooks.cards — A debit card backed by liquidity",
+    title: "hooks.cards",
     description,
+    images: ["/social-preview.jpg"],
   },
 };
 
