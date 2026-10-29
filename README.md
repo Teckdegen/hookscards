@@ -26,4 +26,4 @@ Then open http://localhost:3000.
 ## Notes
 
 - The X link in the footer is set by `X_HANDLE` and `X_URL` at the top of `app/page.tsx`.
-- The site address used for share previews is `metadataBase` in `app/layout.tsx`.
+- The site address used for share previews (https://zedkr.finance) is `siteUrl` in `app/layout.tsx`.

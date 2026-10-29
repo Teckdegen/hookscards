@@ -14,10 +14,8 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-// The live site address, used to build absolute share-image links. Set SITE_URL in production.
-const siteUrl =
-  process.env.SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+// The live site address, used to build absolute share-image links.
+const siteUrl = "https://zedkr.finance";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
