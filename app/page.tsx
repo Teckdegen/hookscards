@@ -15,11 +15,12 @@ import { siX } from "simple-icons";
 import heroPhoto from "@/public/hero.jpg";
 import PaymentToasts from "@/components/PaymentToasts";
 import Reveal from "@/components/Reveal";
-import { Logo, HookMark } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 import { Phone } from "@/components/Phone";
 import { HomeScreen, CardScreen, HookScreen } from "@/components/AppScreens";
 import SwipeCards from "@/components/SwipeCards";
 import MerchantMarquee from "@/components/MerchantMarquee";
+import DownloadMenu from "@/components/DownloadMenu";
 import ExchangeUniswap from "@web3icons/react/icons/exchanges/ExchangeUniswap";
 
 // TODO: replace with the real X account.
@@ -97,13 +98,7 @@ export default function Home() {
             <a href="#card" className="transition hover:text-white/60">The Card</a>
             <a href="#hook" className="transition hover:text-white/60">The Hook</a>
           </div>
-          <a
-            href="#how"
-            className="flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] px-4 py-2.5 text-[15px] font-medium transition hover:bg-panel-2"
-          >
-            <HookMark className="h-4 w-4 text-acid" />
-            How it works
-          </a>
+          <DownloadMenu />
         </nav>
       </header>
 
