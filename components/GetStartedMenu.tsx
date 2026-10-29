@@ -12,7 +12,7 @@ export default function GetStartedMenu({ variant = "nav" }: { variant?: "nav" | 
   return (
     <details className={`group relative ${isHero ? "rise d4 mt-6 inline-block text-left" : ""}`}>
       <summary className={`flex cursor-pointer list-none items-center gap-2.5 rounded-full font-medium transition [&::-webkit-details-marker]:hidden ${isHero
-        ? "bg-accent px-7 py-4 text-[17px] text-black shadow-[0_0_30px_-8px_rgba(255,255,255,0.7)] hover:brightness-110"
+        ? "bg-accent px-[22px] py-3 text-[14px] text-black shadow-[0_0_30px_-8px_rgba(255,255,255,0.7)] hover:brightness-110"
         : "border border-white/10 bg-[#161616] px-5 py-2.5 text-[15px] hover:bg-panel-2"
       }`}>
         Get started
