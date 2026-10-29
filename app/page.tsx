@@ -126,12 +126,7 @@ export default function Home() {
             No bank account behind it. A Uniswap v4 hook keeps your balance protected,
             spendable, and cheap to spend.
           </p>
-          <a
-            href="#how"
-            className="rise d4 mt-9 inline-block rounded-full bg-acid px-6 py-3 text-[17px] font-medium text-black shadow-[0_0_30px_-8px_rgba(198,255,61,0.7)] transition hover:brightness-110"
-          >
-            See how it works
-          </a>
+          <DownloadMenu variant="hero" />
         </div>
 
         {/* Hero photo */}
