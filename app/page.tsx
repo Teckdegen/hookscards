@@ -296,10 +296,6 @@ export default function Home() {
             <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-muted">
               Zedkr turns Robinhood Chain assets into everyday money.
             </p>
-            <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111] py-1.5 pl-1.5 pr-3.5 text-[13px] text-white/70">
-              <MerchantIcon id="robinhood" size={22} />
-              Built on Robinhood Chain
-            </span>
           </div>
           <div>
             <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-white/40">Explore</p>
@@ -324,12 +320,28 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <p
-          aria-hidden
-          className="headline relative mx-auto mt-16 -mb-[0.18em] max-w-6xl select-none whitespace-nowrap bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.02)_85%)] bg-clip-text px-4 text-center text-[17vw] font-semibold leading-none text-transparent xl:text-[210px]"
-        >
-          Zedkr
-        </p>
+        {/* Wordmark stretched edge to edge at any screen width */}
+        <svg aria-hidden viewBox="0 0 1000 285" className="relative mt-16 block w-full select-none" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="wordmark-fade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#ffffff" stopOpacity="0.16" />
+              <stop offset="0.85" stopColor="#ffffff" stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+          <text
+            x="6"
+            y="282"
+            textLength="986"
+            lengthAdjust="spacingAndGlyphs"
+            fill="url(#wordmark-fade)"
+            fontSize="382"
+            fontWeight="600"
+            letterSpacing="-15"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Zedkr
+          </text>
+        </svg>
       </footer>
     </main>
   );

@@ -1,8 +1,9 @@
 import { ArrowRight, ArrowUpRight, Landmark, ShoppingBag } from "lucide-react";
+import { MerchantIcon, type MerchantId } from "./Merchant";
 
-const apps = [
-  { label: "Cash", sub: "Cash out to your bank or app", href: "https://cash.zedkr.finance", icon: Landmark },
-  { label: "Shop", sub: "Amazon and eBay with crypto", href: "https://shop.zedkr.finance", icon: ShoppingBag },
+const apps: { label: string; sub: string; href: string; icon: typeof Landmark; logos: MerchantId[] }[] = [
+  { label: "Cash", sub: "Cash out to your bank", href: "https://cash.zedkr.finance", icon: Landmark, logos: ["revolut", "chime", "zelle"] },
+  { label: "Shop", sub: "Amazon and eBay with crypto", href: "https://shop.zedkr.finance", icon: ShoppingBag, logos: ["amazon", "ebay"] },
 ];
 
 // "Get started" button that opens a menu with the Cash and Shop apps.
@@ -19,23 +20,32 @@ export default function GetStartedMenu({ variant = "nav" }: { variant?: "nav" | 
         <ArrowRight className="h-4 w-4 transition group-open:rotate-90" strokeWidth={2} />
       </summary>
 
-      <div className={`invisible pointer-events-none absolute top-full z-50 mt-3 w-[min(21rem,calc(100vw-2rem))] translate-y-1 rounded-3xl border border-white/[0.08] bg-[#151515]/95 p-2 opacity-0 shadow-2xl backdrop-blur-xl transition duration-150 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100 group-open:visible group-open:pointer-events-auto group-open:translate-y-0 group-open:opacity-100 ${isHero ? "left-1/2 -translate-x-1/2" : "right-0"}`}>
-        {apps.map(({ label, sub, href, icon: Icon }) => (
+      <div className={`invisible pointer-events-none absolute top-full z-50 mt-2.5 w-[min(19rem,calc(100vw-2rem))] translate-y-1 rounded-[20px] border border-white/10 bg-[#0f0f10] p-1.5 opacity-0 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.9)] transition duration-150 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100 group-open:visible group-open:pointer-events-auto group-open:translate-y-0 group-open:opacity-100 ${isHero ? "left-1/2 -translate-x-1/2" : "right-0"}`}>
+        {apps.map(({ label, sub, href, icon: Icon, logos }) => (
           <a
             key={label}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group/item flex items-center gap-4 rounded-2xl px-3 py-3 text-white/85 transition hover:bg-white/[0.06] hover:text-white"
+            className="group/item flex items-center gap-3 rounded-[14px] px-3 py-2.5 transition hover:bg-white/[0.06]"
           >
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-black">
-              <Icon className="h-5 w-5" strokeWidth={1.8} />
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[10px] bg-white/[0.07] text-white ring-1 ring-white/10">
+              <Icon className="h-4 w-4" strokeWidth={1.8} />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-[16px] font-medium">{label}</span>
-              <span className="block text-[13px] text-white/50">{sub}</span>
+              <span className="flex items-center gap-1 text-[14px] font-medium text-white">
+                {label}
+                <ArrowUpRight className="h-3.5 w-3.5 -translate-x-1 text-white/0 transition group-hover/item:translate-x-0 group-hover/item:text-white/70" strokeWidth={2} />
+              </span>
+              <span className="block truncate text-[12px] text-white/45">{sub}</span>
             </span>
-            <ArrowUpRight className="h-4 w-4 text-white/40 transition group-hover/item:-translate-y-0.5 group-hover/item:translate-x-0.5 group-hover/item:text-white" strokeWidth={2} />
+            <span className="flex shrink-0 -space-x-1.5">
+              {logos.map((id) => (
+                <span key={id} className="rounded-full ring-2 ring-[#0f0f10]">
+                  <MerchantIcon id={id} size={20} />
+                </span>
+              ))}
+            </span>
           </a>
         ))}
       </div>
