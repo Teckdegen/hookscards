@@ -7,8 +7,6 @@ import {
   Wallet,
 } from "lucide-react";
 import Image from "next/image";
-import { siX, siTelegram } from "simple-icons";
-import { dexscreenerPath } from "@/components/dexscreenerIcon";
 import heroPhoto from "@/public/hero.jpg";
 import payingPhoto from "@/public/offramp/paying.jpg";
 import PaymentToasts from "@/components/PaymentToasts";
@@ -23,10 +21,10 @@ import SwipeCards from "@/components/SwipeCards";
 import GetStartedMenu from "@/components/GetStartedMenu";
 
 const SOCIALS = [
-  { name: "X", label: "@ZedkrPay", href: "https://x.com/ZedkrPay", icon: siX.path, bg: "#ffffff", fg: "#000000" },
-  { name: "Telegram", label: "Telegram", href: "https://t.me/zedkrpay", icon: siTelegram.path, bg: "#26A5E4", fg: "#ffffff" },
-  { name: "DEX Screener", label: "DEX Screener", href: "https://dexscreener.com/robinhood/0x1650ed40d8d506b9b29199e9d7e934805f4bdafa", icon: dexscreenerPath, bg: "#000000", fg: "#ffffff" },
-];
+  { label: "Twitter", href: "https://x.com/ZedkrPay" },
+  { label: "Telegram", href: "https://t.me/zedkrpay" },
+  { label: "DEX Screener", href: "https://dexscreener.com/robinhood/0x1650ed40d8d506b9b29199e9d7e934805f4bdafa" },
+]
 
 // Faint scattered glyphs behind the hero, placed with a fixed seed so server and client match.
 const glyphs = (() => {
@@ -315,24 +313,10 @@ export default function Home() {
           </div>
           <div>
             <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-white/40">Follow</p>
-            <ul className="mt-5 space-y-2.5">
+            <ul className="mt-5 space-y-3 text-[15px]">
               {SOCIALS.map((s) => (
-                <li key={s.name}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Zedkr on ${s.name}`}
-                    className="inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-[#111] py-1.5 pl-1.5 pr-4 text-[15px] text-white/80 transition hover:border-white/20 hover:text-white"
-                  >
-                    <span
-                      className="grid h-8 w-8 place-items-center rounded-full ring-1 ring-white/10"
-                      style={{ background: s.bg, color: s.fg }}
-                    >
-                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" fillRule="evenodd" aria-hidden="true">
-                        <path d={s.icon} />
-                      </svg>
-                    </span>
+                <li key={s.label}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-white/75 transition hover:text-white">
                     {s.label}
                   </a>
                 </li>
