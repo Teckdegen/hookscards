@@ -14,16 +14,12 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-const description =
-  "Hooks.cards replaces the bank account behind your debit card with a liquidity pool. A Uniswap v4 hook keeps it protected, spendable, and cheap to spend.";
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://hooks.cards"),
   title: "hooks.cards",
-  description,
   openGraph: {
-    title: "hooks.cards",
-    description,
+    title: "",
+    description: "",
     images: [{ url: "/social-preview.jpg", width: 1280, height: 426, alt: "hooks.cards app and debit card" }],
     url: "/",
     siteName: "hooks.cards",
@@ -31,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "hooks.cards",
-    description,
+    title: "",
+    description: "",
     images: ["/social-preview.jpg"],
   },
 };
