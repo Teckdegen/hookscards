@@ -1,103 +1,308 @@
+import {
+  ArrowLeftRight,
+  BadgeCheck,
+  CreditCard,
+  Gauge,
+  Lock,
+  Droplets,
+  RefreshCw,
+  ShieldCheck,
+  Wallet,
+  Zap,
+} from "lucide-react";
 import Image from "next/image";
+import { siX } from "simple-icons";
+import heroPhoto from "@/public/hero.jpg";
+import PaymentToasts from "@/components/PaymentToasts";
+import Reveal from "@/components/Reveal";
+import { Logo, HookMark } from "@/components/Logo";
+import { Phone } from "@/components/Phone";
+import { HomeScreen, CardScreen, HookScreen } from "@/components/AppScreens";
+import SwipeCards from "@/components/SwipeCards";
+import MerchantMarquee from "@/components/MerchantMarquee";
+import ExchangeUniswap from "@web3icons/react/icons/exchanges/ExchangeUniswap";
+
+// TODO: replace with the real X account.
+const X_HANDLE = "@hookscards";
+const X_URL = "https://x.com/hookscards";
+
+// Faint scattered glyphs behind the hero, placed with a fixed seed so server and client match.
+const glyphs = (() => {
+  let seed = 7;
+  const rand = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+  const chars = ["$", "$", "Ξ", "◎", "↺", "$", "€"];
+  return Array.from({ length: 220 }, () => ({
+    x: rand() * 100,
+    y: rand() * 100,
+    c: chars[Math.floor(rand() * chars.length)],
+    d: rand() * 5,
+  }));
+})();
+
+const features = [
+  { icon: Wallet, title: "One balance", body: "Spending money and liquidity are the same balance. Nothing to move between accounts." },
+  { icon: Zap, title: "Ready cash", body: "A slice of your balance is always ready for the next swipe, kept topped up by the hook." },
+  { icon: CreditCard, title: "Debit card", body: "Pay anywhere cards are accepted. The merchant sees a normal card payment." },
+  { icon: ShieldCheck, title: "The hook", body: "A Uniswap v4 hook protects your balance and keeps it spendable, onchain and in the open." },
+];
+
+const spendList = [
+  { icon: CreditCard, text: "Pays like a normal debit card" },
+  { icon: RefreshCw, text: "Ready cash refilled by the hook" },
+  { icon: ArrowLeftRight, text: "Lower fee on card spending" },
+  { icon: BadgeCheck, text: "No bank account behind it" },
+];
+
+const guardList = [
+  { icon: Gauge, text: "Higher fees for traders when markets swing" },
+  { icon: Lock, text: "Depeg breaker for stablecoins" },
+  { icon: ShieldCheck, text: "Pool open to cardholders only" },
+  { icon: Droplets, text: "Earns a share of trading fees" },
+];
+
+function FeatureList({ items }: { items: { icon: typeof Wallet; text: string }[] }) {
+  return (
+    <ul className="border-t border-line">
+      {items.map(({ icon: Icon, text }, i) => (
+        <Reveal key={text} delay={i * 90}>
+          <li className="flex items-center gap-4 border-b border-line py-5 text-[17px]">
+            <Icon className="h-5 w-5 shrink-0" strokeWidth={1.6} />
+            {text}
+          </li>
+        </Reveal>
+      ))}
+    </ul>
+  );
+}
+
+function SplitHeading({ title, body }: { title: string; body: string }) {
+  return (
+    <Reveal>
+      <h2 className="headline text-fade text-4xl sm:text-[52px]">{title}</h2>
+      <p className="mt-5 max-w-md text-lg leading-relaxed text-muted">{body}</p>
+    </Reveal>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+    <main className="overflow-x-hidden">
+      {/* Nav */}
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-black/70 backdrop-blur-xl">
+        <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <a href="#" aria-label="hooks.cards home">
+            <Logo />
           </a>
+          <div className="hidden gap-8 text-[15px] font-medium md:flex">
+            <a href="#card" className="transition hover:text-white/60">The Card</a>
+            <a href="#hook" className="transition hover:text-white/60">The Hook</a>
+          </div>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#how"
+            className="flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] px-4 py-2.5 text-[15px] font-medium transition hover:bg-panel-2"
           >
-            Read our docs
+            <HookMark className="h-4 w-4 text-acid" />
+            How it works
+          </a>
+        </nav>
+      </header>
+
+      {/* Hero */}
+      <section className="hero-glow relative overflow-hidden pt-36 sm:pt-44">
+        <div aria-hidden className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black_40%,transparent_85%)]">
+          {glyphs.map((g, i) => (
+            <span
+              key={i}
+              className="twinkle absolute font-mono text-[13px] text-white/[0.09]"
+              style={{ left: `${g.x}%`, top: `${g.y}%`, animationDelay: `${g.d}s` }}
+            >
+              {g.c}
+            </span>
+          ))}
+        </div>
+
+        <div className="relative mx-auto max-w-4xl px-4 text-center">
+          <h1 className="headline text-[42px] sm:text-6xl lg:text-[68px]">
+            <span className="rise d1 text-fade inline-block pb-1">A debit card</span>{" "}
+            <br className="hidden sm:block" />
+            <span className="rise d2 text-fade inline-block pb-1">backed by liquidity</span>
+          </h1>
+          <p className="rise d3 mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 sm:text-xl">
+            No bank account behind it. A Uniswap v4 hook keeps your balance protected,
+            spendable, and cheap to spend.
+          </p>
+          <a
+            href="#how"
+            className="rise d4 mt-9 inline-block rounded-full bg-acid px-6 py-3 text-[17px] font-medium text-black shadow-[0_0_30px_-8px_rgba(198,255,61,0.7)] transition hover:brightness-110"
+          >
+            See how it works
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* Hero photo */}
+        <div className="rise d5 relative mx-auto mt-20 max-w-6xl px-4">
+          <div className="relative h-[460px] overflow-hidden sm:h-[620px] [mask-image:radial-gradient(ellipse_62%_75%_at_50%_45%,black_40%,transparent_100%)]">
+            <div className="slow-zoom absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_70%,#1e2a12_0%,#0b0d09_45%,#000_75%)]" />
+            <Image
+              src={heroPhoto}
+              alt="Two colleagues working late in a dimly lit office"
+              fill
+              priority
+              placeholder="blur"
+              sizes="(min-width: 1152px) 1152px, 100vw"
+              className="slow-zoom object-cover brightness-[0.8]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
+          </div>
+          <div className="absolute inset-x-0 top-6 flex justify-center px-4 sm:top-10">
+            <PaymentToasts />
+          </div>
+        </div>
+      </section>
+
+      {/* Intro */}
+      <section className="px-4 py-24 text-center">
+        <Reveal>
+          <p className="mx-auto inline-flex items-center gap-3 rounded-full bg-[#121212] px-5 py-3 text-[17px] text-muted">
+            <ExchangeUniswap variant="branded" size={24} />
+            Built on Uniswap v4 hooks
+          </p>
+        </Reveal>
+        <Reveal delay={100}>
+          <h2 className="headline mx-auto mt-20 max-w-3xl text-4xl sm:text-[52px]">
+            The bank&apos;s job, done by a hook.
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-lg text-muted sm:text-xl">
+            Hold, protect, and spend your money. No bank account in the middle.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* App overview */}
+      <section className="px-4 pb-24">
+        <Reveal>
+          <div className="float">
+            <Phone label="hooks.cards app home screen: spending balance, hook status and recent card payments">
+              <HomeScreen />
+            </Phone>
+          </div>
+        </Reveal>
+
+        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-x-5 gap-y-10 sm:mt-20 sm:gap-10 lg:grid-cols-4">
+          {features.map(({ icon: Icon, title, body }, i) => (
+            <Reveal key={title} delay={i * 100}>
+              <Icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={1.5} />
+              <h3 className="mt-4 text-lg font-medium tracking-tight sm:mt-8 sm:text-xl">{title}</h3>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-muted sm:mt-2 sm:text-base">{body}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* The card */}
+      <section id="card" className="scroll-mt-20 px-4 py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_380px_1fr]">
+          <SplitHeading
+            title="Spend from the pool you own"
+            body="Your card draws from ready cash. The hook refills it from your liquidity, so you never top up by hand."
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <Reveal delay={120}>
+            <Phone label="hooks.cards app card screen: the debit card, its status and spending settings">
+              <CardScreen />
+            </Phone>
+          </Reveal>
+          <div className="min-w-0">
+            <FeatureList items={spendList} />
+            <MerchantMarquee />
+          </div>
+        </div>
+      </section>
+
+      {/* The hook */}
+      <section id="hook" className="scroll-mt-20 px-4 py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_380px_1fr]">
+          <SplitHeading
+            title="Guarded by code"
+            body="Earning fees doesn't need a hook. Any pool does that. The hook is what makes liquidity safe enough to back a debit card."
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <Reveal delay={120}>
+            <Phone label="hooks.cards app hook screen: protection status for your balance">
+              <HookScreen />
+            </Phone>
+          </Reveal>
+          <FeatureList items={guardList} />
+        </div>
+      </section>
+
+      {/* How it works — gradient cards */}
+      <section id="how" className="px-4 py-24">
+        <Reveal className="text-center">
+          <h2 className="headline text-fade text-4xl sm:text-[52px]">One swipe. Two worlds.</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted sm:text-xl">
+            The swipe runs on the card network, fast and familiar. Everything around it runs
+            onchain, through the hook.
+          </p>
+        </Reveal>
+        <SwipeCards />
+      </section>
+
+      {/* Footer */}
+      <footer className="relative mt-12 overflow-hidden border-t border-white/[0.06]">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-72 bg-[radial-gradient(60%_100%_at_50%_100%,rgba(198,255,61,0.12),transparent_70%)]" />
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pt-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <Logo />
+            <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-muted">
+              A debit card backed by liquidity. A Uniswap v4 hook does the bank&apos;s job.
+            </p>
+            <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111] px-3.5 py-2 text-[13px] text-white/70">
+              <ExchangeUniswap variant="branded" size={18} />
+              Built on Uniswap v4
+            </span>
+          </div>
+          <div>
+            <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-white/40">Explore</p>
+            <ul className="mt-5 space-y-3 text-[15px]">
+              <li><a href="#card" className="text-white/75 transition hover:text-white">The Card</a></li>
+              <li><a href="#hook" className="text-white/75 transition hover:text-white">The Hook</a></li>
+              <li><a href="#how" className="text-white/75 transition hover:text-white">How it works</a></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-white/40">Follow</p>
+            <a
+              href={X_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-5 inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-[#111] py-2 pl-2 pr-4 text-[15px] text-white/80 transition hover:border-white/20 hover:text-white"
+            >
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-black">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                  <path d={siX.path} />
+                </svg>
+              </span>
+              {X_HANDLE}
+            </a>
+          </div>
+        </div>
+        <p
+          aria-hidden
+          className="headline relative mx-auto mt-16 -mb-[0.18em] max-w-6xl select-none whitespace-nowrap bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.02)_85%)] bg-clip-text px-4 text-center text-[17vw] font-semibold leading-none text-transparent xl:text-[210px]"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          hooks.cards
+        </p>
       </footer>
-    </div>
+
+      {/* Floating chip */}
+      <a
+        href="#how"
+        className="fixed bottom-5 left-5 z-40 hidden items-center gap-3 rounded-full border border-white/10 bg-[#141414]/85 py-1.5 pl-1.5 pr-4 backdrop-blur-md transition hover:bg-panel-2 lg:flex"
+      >
+        <span className="grid h-9 w-9 place-items-center rounded-full bg-acid text-black">
+          <HookMark className="h-5 w-5" />
+        </span>
+        <span className="text-[13px] font-medium">Coming soon</span>
+      </a>
+    </main>
   );
 }
