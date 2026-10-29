@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import { MerchantIcon, type MerchantId } from "./Merchant";
 
-// Illustrative events only — the product is not live.
+// Illustrative events only.
 const events: { merchant: MerchantId; title: string; detail: string }[] = [
-  { merchant: "netflix", title: "$15.49 Paid", detail: "Card purchase at Netflix" },
-  { merchant: "hook", title: "Ready cash refilled", detail: "Hook moved $50.00 from your pool" },
-  { merchant: "airbnb", title: "$184.00 Paid", detail: "Card purchase at Airbnb" },
-  { merchant: "hook", title: "Volatility fee raised", detail: "Hook is protecting your balance" },
-  { merchant: "uber", title: "$23.80 Paid", detail: "Card purchase at Uber" },
-  { merchant: "claude", title: "$20.00 Paid", detail: "Card purchase at Claude" },
+  { merchant: "revolut", title: "$33.53 Cashed out", detail: "Settled to Revolut in EUR" },
+  { merchant: "amazon", title: "Order placed", detail: "Paid with crypto on Amazon" },
+  { merchant: "chime", title: "$120.00 Cashed out", detail: "Sent to your Chime account" },
+  { merchant: "zedkr", title: "Gift card ready", detail: "Bought with crypto" },
+  { merchant: "ebay", title: "Order placed", detail: "Paid with crypto on eBay" },
+  { merchant: "zedkr", title: "Hotel booked", detail: "Corinthia Lisbon · 1 night" },
+  { merchant: "zelle", title: "$75.00 Cashed out", detail: "Sent with Zelle" },
 ];
 
 export default function PaymentToasts() {

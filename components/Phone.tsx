@@ -1,3 +1,4 @@
+import Image, { type StaticImageData } from "next/image";
 import { Check, X } from "lucide-react";
 import { siVisa } from "simple-icons";
 import { MerchantIcon, type MerchantId } from "./Merchant";
@@ -47,15 +48,23 @@ function StatusBar() {
 }
 
 // iPhone-style frame: titanium edge, side buttons, black bezel.
+// Pass `screen` to show a real app screenshot under a status bar coloured to match its top edge.
 export function Phone({
   children,
   label,
   className = "",
+  screen,
+  top = "#ffffff",
+  dark = false,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   label: string;
   className?: string;
+  screen?: StaticImageData;
+  top?: string;
+  dark?: boolean;
 }) {
+  const statusH = Math.round(54 * SCALE);
   // Decorative mockup: screen readers get one description instead of every fake row.
   return (
     <div role="img" aria-label={label} className={`relative mx-auto w-[310px] ${className}`}>
@@ -64,18 +73,33 @@ export function Phone({
       <span className="absolute -left-[3px] top-[170px] h-14 w-[3px] rounded-l bg-[#3a3d42]" />
       <span className="absolute -left-[3px] top-[236px] h-14 w-[3px] rounded-l bg-[#3a3d42]" />
       <span className="absolute -right-[3px] top-[190px] h-20 w-[3px] rounded-r bg-[#3a3d42]" />
-      <div aria-hidden className="rounded-[56px] bg-[linear-gradient(145deg,#5b5f66,#2a2c30_30%,#1a1b1e_60%,#4a4d53)] p-[3px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.9),0_30px_80px_-40px_rgba(198,255,61,0.25)]">
+      <div aria-hidden className="rounded-[56px] bg-[linear-gradient(145deg,#5b5f66,#2a2c30_30%,#1a1b1e_60%,#4a4d53)] p-[3px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.9),0_30px_80px_-40px_rgba(255,255,255,0.25)]">
         <div className="rounded-[53px] bg-black p-[9px]">
-          <div className="relative h-[620px] overflow-hidden rounded-[44px]" style={{ background: app.bg, color: app.text }}>
-            {/* Laid out at real iPhone size (390×844pt), then scaled to fit the frame. */}
-            <div
-              className="relative origin-top-left"
-              style={{ width: SCREEN_W, height: SCREEN_H, transform: `scale(${SCALE})` }}
-            >
-              <StatusBar />
-              {children}
+          {screen ? (
+            <div className="relative h-[620px] overflow-hidden rounded-[44px]" style={{ background: top, color: dark ? "#fff" : "#000" }}>
+              <div className="relative origin-top-left" style={{ width: SCREEN_W, transform: `scale(${SCALE})` }}>
+                <StatusBar />
+              </div>
+              <Image
+                src={screen}
+                alt=""
+                sizes="286px"
+                className="absolute inset-x-0 bottom-0 h-auto w-full object-cover object-top"
+                style={{ top: statusH, height: `calc(100% - ${statusH}px)` }}
+              />
             </div>
-          </div>
+          ) : (
+            <div className="relative h-[620px] overflow-hidden rounded-[44px]" style={{ background: app.bg, color: app.text }}>
+              {/* Laid out at real iPhone size (390×844pt), then scaled to fit the frame. */}
+              <div
+                className="relative origin-top-left"
+                style={{ width: SCREEN_W, height: SCREEN_H, transform: `scale(${SCALE})` }}
+              >
+                <StatusBar />
+                {children}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -114,7 +138,7 @@ export function TxRow({
         {status && (
           <span
             className={`absolute -bottom-0.5 -right-0.5 grid h-[18px] w-[18px] place-items-center rounded-full ring-2 ${
-              status === "ok" ? "bg-acid text-black" : "bg-white text-black"
+              status === "ok" ? "bg-accent text-black" : "bg-white text-black"
             }`}
             style={{ ["--tw-ring-color" as string]: app.bg }}
           >
@@ -126,7 +150,7 @@ export function TxRow({
         <p className="truncate text-[16px] font-medium leading-tight">{name}</p>
         <p className="mt-1 text-[13px] leading-tight" style={{ color: app.muted }}>{date}</p>
       </div>
-      <span className={`text-[16px] font-medium tabular-nums ${positive ? "text-acid" : ""}`}>{amount}</span>
+      <span className={`text-[16px] font-medium tabular-nums ${positive ? "text-accent" : ""}`}>{amount}</span>
     </div>
   );
 }
@@ -134,23 +158,23 @@ export function TxRow({
 // Concentric contour lines rippling out from the hook, like a machined metal card.
 const contours = Array.from({ length: 80 }, (_, i) => 18 + i * 11);
 
-// Brushed lime metal card: raised hook mark, contour lines, network logo. No text.
+// Brushed silver metal card: raised hook mark, contour lines, network logo. No text.
 export function MiniCard() {
   return (
     <div className="relative aspect-[1.586] w-full overflow-hidden rounded-[18px] shadow-[0_24px_50px_-20px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.9),inset_0_0_0_1px_rgba(0,0,0,0.12)]">
       <svg viewBox="0 0 860 540" className="absolute inset-0 h-full w-full" aria-hidden="true">
         <defs>
           <linearGradient id="hc-metal" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#efffc4" />
-            <stop offset="0.28" stopColor="#b6ec2a" />
-            <stop offset="0.52" stopColor="#dcff86" />
-            <stop offset="0.78" stopColor="#9ccf17" />
-            <stop offset="1" stopColor="#c6ff3d" />
+            <stop offset="0" stopColor="#f6f7f9" />
+            <stop offset="0.28" stopColor="#c8cbd0" />
+            <stop offset="0.52" stopColor="#eceef1" />
+            <stop offset="0.78" stopColor="#aeb2b8" />
+            <stop offset="1" stopColor="#dfe1e5" />
           </linearGradient>
           <linearGradient id="hc-raised" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor="#ffffff" />
-            <stop offset="0.5" stopColor="#d4f97a" />
-            <stop offset="1" stopColor="#f2ffcf" />
+            <stop offset="0.5" stopColor="#dadde1" />
+            <stop offset="1" stopColor="#f3f4f6" />
           </linearGradient>
           <linearGradient id="hc-sheen" x1="0" y1="0" x2="1" y2="0.6">
             <stop offset="0.3" stopColor="#fff" stopOpacity="0" />
@@ -162,7 +186,7 @@ export function MiniCard() {
         <rect width="860" height="540" fill="url(#hc-metal)" />
 
         {/* contour lines centred on the mark's meeting point */}
-        <g fill="none" stroke="#2c4200" strokeOpacity="0.28" strokeWidth="1.6">
+        <g fill="none" stroke="#2f333a" strokeOpacity="0.3" strokeWidth="1.6">
           {contours.map((r) => (
             <circle key={r} cx="240" cy="200" r={r} />
           ))}
@@ -170,7 +194,7 @@ export function MiniCard() {
 
         {/* raised mark: shadow, faceted body, edge highlight */}
         <g transform="translate(-30 -70) scale(5.4)">
-          <g transform="translate(0.7 0.9)" fill="#1f3000" fillOpacity="0.3">
+          <g transform="translate(0.7 0.9)" fill="#000000" fillOpacity="0.3">
             {MARK_PARTS.map(({ points }) => (
               <polygon key={points} points={points} />
             ))}
@@ -192,7 +216,7 @@ export function MiniCard() {
         <rect width="860" height="540" fill="url(#hc-sheen)" />
 
         {/* network mark */}
-        <path d={siVisa.path} transform="translate(694 420) scale(5.2)" fill="#2f4700" />
+        <path d={siVisa.path} transform="translate(694 420) scale(5.2)" fill="#4a4f57" />
       </svg>
     </div>
   );

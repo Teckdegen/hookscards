@@ -14,22 +14,27 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+// The live site address, used to build absolute share-image links. Set SITE_URL in production.
+const siteUrl =
+  process.env.SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hooks.cards"),
-  title: "hooks.cards",
+  metadataBase: new URL(siteUrl),
+  title: "Zedkr",
   openGraph: {
     title: "",
     description: "",
-    images: [{ url: "/social-preview.jpg", width: 1280, height: 426, alt: "hooks.cards app and debit card" }],
+    images: [{ url: "/og.jpg", width: 1500, height: 500, alt: "Zedkr" }],
     url: "/",
-    siteName: "hooks.cards",
+    siteName: "Zedkr",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "",
     description: "",
-    images: ["/social-preview.jpg"],
+    images: ["/og.jpg"],
   },
 };
 

@@ -1,31 +1,32 @@
 import {
-  ArrowLeftRight,
-  BadgeCheck,
-  CreditCard,
-  Gauge,
-  Lock,
-  Droplets,
-  RefreshCw,
-  ShieldCheck,
+  Gift,
+  Landmark,
+  Plane,
+  ShoppingBag,
+  TrendingUp,
   Wallet,
-  Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { siX } from "simple-icons";
+import { siX, siTelegram } from "simple-icons";
+import { dexscreenerPath } from "@/components/dexscreenerIcon";
 import heroPhoto from "@/public/hero.jpg";
+import payingPhoto from "@/public/offramp/paying.jpg";
 import PaymentToasts from "@/components/PaymentToasts";
 import Reveal from "@/components/Reveal";
 import { Logo } from "@/components/Logo";
-import { Phone } from "@/components/Phone";
-import { HomeScreen, CardScreen, HookScreen } from "@/components/AppScreens";
+import { MerchantIcon, type MerchantId } from "@/components/Merchant";
+import OfframpToast from "@/components/OfframpToast";
+import ShopCards from "@/components/ShopCards";
+import TravelCards from "@/components/TravelCards";
+import StatsCards from "@/components/StatsCards";
 import SwipeCards from "@/components/SwipeCards";
-import MerchantMarquee from "@/components/MerchantMarquee";
-import DownloadMenu from "@/components/DownloadMenu";
-import ExchangeUniswap from "@web3icons/react/icons/exchanges/ExchangeUniswap";
+import GetStartedMenu from "@/components/GetStartedMenu";
 
-// TODO: replace with the real X account.
-const X_HANDLE = "@hooksdotcards";
-const X_URL = "https://x.com/hooksdotcards";
+const SOCIALS = [
+  { name: "X", label: "@ZedkrPay", href: "https://x.com/ZedkrPay", icon: siX.path, bg: "#ffffff", fg: "#000000" },
+  { name: "Telegram", label: "Telegram", href: "https://t.me/zedkrpay", icon: siTelegram.path, bg: "#26A5E4", fg: "#ffffff" },
+  { name: "DEX Screener", label: "DEX Screener", href: "https://dexscreener.com/robinhood/0x1650ed40d8d506b9b29199e9d7e934805f4bdafa", icon: dexscreenerPath, bg: "#000000", fg: "#ffffff" },
+];
 
 // Faint scattered glyphs behind the hero, placed with a fixed seed so server and client match.
 const glyphs = (() => {
@@ -41,47 +42,60 @@ const glyphs = (() => {
 })();
 
 const features = [
-  { icon: Wallet, title: "One balance", body: "Spending money and liquidity are the same balance. Nothing to move between accounts." },
-  { icon: Zap, title: "Ready cash", body: "A slice of your balance is always ready for the next swipe, kept topped up by the hook." },
-  { icon: CreditCard, title: "Debit card", body: "Pay anywhere cards are accepted. The merchant sees a normal card payment." },
-  { icon: ShieldCheck, title: "The hook", body: "A Uniswap v4 hook protects your balance and keeps it spendable, onchain and in the open." },
+  { icon: Landmark, title: "Cash out", body: "Send your crypto to Chime, Revolut, Zelle, Monzo or Mercado Pago as everyday money." },
+  { icon: ShoppingBag, title: "Shop", body: "Check out on Amazon and eBay and pay with your Robinhood assets." },
+  { icon: Gift, title: "Gift cards", body: "Buy gift cards with crypto, ready to use or send to someone." },
+  { icon: Plane, title: "Travel", body: "Book hotels for your next trip and pay with crypto." },
 ];
 
-const spendList = [
-  { icon: CreditCard, text: "Pays like a normal debit card" },
-  { icon: RefreshCw, text: "Ready cash refilled by the hook" },
-  { icon: ArrowLeftRight, text: "Lower fee on card spending" },
-  { icon: BadgeCheck, text: "No bank account behind it" },
+type Row = { logo?: MerchantId; icon?: typeof Wallet; title: string; sub: string };
+
+const cashbackRows: Row[] = [
+  { icon: Landmark, title: "Off-ramp cashback", sub: "Tokens back on every cash out" },
+  { icon: ShoppingBag, title: "Shopping cashback", sub: "Tokens back on Amazon and eBay orders" },
+  { icon: TrendingUp, title: "Counts as holdings", sub: "Cashback makes you eligible for stock airdrops" },
 ];
 
-const guardList = [
-  { icon: Gauge, text: "Higher fees for traders when markets swing" },
-  { icon: Lock, text: "Depeg breaker for stablecoins" },
-  { icon: ShieldCheck, text: "Pool open to cardholders only" },
-  { icon: Droplets, text: "Earns a share of trading fees" },
-];
+/* ---------- small building blocks ---------- */
 
-function FeatureList({ items }: { items: { icon: typeof Wallet; text: string }[] }) {
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-white/50">{children}</p>;
+}
+
+function SplitHeading({ eyebrow, title, body, children }: { eyebrow: string; title: React.ReactNode; body: string; children?: React.ReactNode }) {
+  return (
+    <Reveal>
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 className="headline text-fade mt-4 text-4xl sm:text-[52px]">{title}</h2>
+      <p className="mt-5 max-w-md text-lg leading-relaxed text-muted">{body}</p>
+      {children}
+    </Reveal>
+  );
+}
+
+function RowList({ rows }: { rows: Row[] }) {
   return (
     <ul className="border-t border-line">
-      {items.map(({ icon: Icon, text }, i) => (
-        <Reveal key={text} delay={i * 90}>
-          <li className="flex items-center gap-4 border-b border-line py-5 text-[17px]">
-            <Icon className="h-5 w-5 shrink-0" strokeWidth={1.6} />
-            {text}
+      {rows.map(({ logo, icon: Icon, title, sub }, i) => (
+        <Reveal key={title} delay={i * 90}>
+          <li className="flex items-center gap-4 border-b border-line py-4 transition hover:translate-x-1">
+            {logo ? (
+              <MerchantIcon id={logo} size={40} />
+            ) : (
+              Icon && (
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/[0.06] text-white">
+                  <Icon className="h-5 w-5" strokeWidth={1.6} />
+                </span>
+              )
+            )}
+            <span className="min-w-0">
+              <span className="block text-[17px] font-medium">{title}</span>
+              <span className="block text-[14px] text-muted">{sub}</span>
+            </span>
           </li>
         </Reveal>
       ))}
     </ul>
-  );
-}
-
-function SplitHeading({ title, body }: { title: string; body: string }) {
-  return (
-    <Reveal>
-      <h2 className="headline text-fade text-4xl sm:text-[52px]">{title}</h2>
-      <p className="mt-5 max-w-md text-lg leading-relaxed text-muted">{body}</p>
-    </Reveal>
   );
 }
 
@@ -91,14 +105,17 @@ export default function Home() {
       {/* Nav */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-black/70 backdrop-blur-xl">
         <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#" aria-label="hooks.cards home">
+          <a href="#" aria-label="Zedkr home">
             <Logo />
           </a>
-          <div className="hidden gap-8 text-[15px] font-medium md:flex">
-            <a href="#card" className="transition hover:text-white/60">The Card</a>
-            <a href="#hook" className="transition hover:text-white/60">The Hook</a>
+          <div className="hidden gap-7 text-[15px] font-medium md:flex">
+            <a href="#offramp" className="transition hover:text-white/60">Off-ramp</a>
+            <a href="#shop" className="transition hover:text-white/60">Shop</a>
+            <a href="#cashback" className="transition hover:text-white/60">Cashback</a>
+            <a href="#travel" className="transition hover:text-white/60">Travel</a>
+            <a href="#stats" className="transition hover:text-white/60">Stats</a>
           </div>
-          <DownloadMenu />
+          <GetStartedMenu />
         </nav>
       </header>
 
@@ -116,23 +133,24 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="relative mx-auto max-w-4xl px-4 text-center">
+        <div className="relative z-20 mx-auto max-w-4xl px-4 text-center">
           <h1 className="headline text-[42px] sm:text-6xl lg:text-[68px]">
-            <span className="rise d1 text-fade inline-block pb-1">A debit card</span>{" "}
+            <span className="rise d1 text-fade inline-block pb-1">Spend. Earn.</span>{" "}
             <br className="hidden sm:block" />
-            <span className="rise d2 text-fade inline-block pb-1">backed by liquidity</span>
+            <span className="rise d2 text-fade inline-block pb-1">Hold. Repeat.</span>
           </h1>
-          <p className="rise d3 mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 sm:text-xl">
-            No bank account behind it. A Uniswap v4 hook keeps your balance protected,
-            spendable, and cheap to spend.
+          <p className="rise d3 mx-auto mt-5 max-w-xl text-[13px] leading-relaxed text-white/60 sm:text-[14px]">
+            Zedkr turns Robinhood Chain assets into everyday money. Cash out to Chime, Revolut,
+            Zelle and Monzo, shop on Amazon and eBay, buy gift cards, book hotels and send money,
+            all with crypto. Earn tokenized stock rewards funded by token taxes and protocol activity.
           </p>
-          <DownloadMenu variant="hero" />
+          <GetStartedMenu variant="hero" />
         </div>
 
         {/* Hero photo */}
         <div className="rise d5 relative mx-auto mt-20 max-w-6xl px-4">
           <div className="relative h-[460px] overflow-hidden sm:h-[620px] [mask-image:radial-gradient(ellipse_62%_75%_at_50%_45%,black_40%,transparent_100%)]">
-            <div className="slow-zoom absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_70%,#1e2a12_0%,#0b0d09_45%,#000_75%)]" />
+            <div className="slow-zoom absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_70%,#1d1d1f_0%,#0b0b0c_45%,#000_75%)]" />
             <Image
               src={heroPhoto}
               alt="Two colleagues working late in a dimly lit office"
@@ -153,30 +171,24 @@ export default function Home() {
       {/* Intro */}
       <section className="px-4 py-24 text-center">
         <Reveal>
-          <p className="mx-auto inline-flex items-center gap-3 rounded-full bg-[#121212] px-5 py-3 text-[17px] text-muted">
-            <ExchangeUniswap variant="branded" size={24} />
-            Built on Uniswap v4 hooks
+          <p className="mx-auto inline-flex items-center gap-3 rounded-full bg-[#121212] py-2 pl-2 pr-5 text-[17px] text-muted">
+            <MerchantIcon id="robinhood" size={30} />
+            Built on Robinhood Chain
           </p>
         </Reveal>
         <Reveal delay={100}>
           <h2 className="headline mx-auto mt-20 max-w-3xl text-4xl sm:text-[52px]">
-            The bank&apos;s job, done by a hook.
+            Your crypto, as everyday money.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg text-muted sm:text-xl">
-            Hold, protect, and spend your money. No bank account in the middle.
+            One wallet to cash out, shop, book trips and send money, paid with the assets you
+            already hold.
           </p>
         </Reveal>
       </section>
 
-      {/* App overview */}
+      {/* Overview stage + features */}
       <section className="px-4 pb-24">
-        <Reveal>
-          <div className="float">
-            <Phone label="hooks.cards app home screen: spending balance, hook status and recent card payments">
-              <HomeScreen />
-            </Phone>
-          </div>
-        </Reveal>
 
         <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-x-5 gap-y-10 sm:mt-20 sm:gap-10 lg:grid-cols-4">
           {features.map(({ icon: Icon, title, body }, i) => (
@@ -189,48 +201,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The card */}
-      <section id="card" className="scroll-mt-20 px-4 py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_380px_1fr]">
+      {/* Off-ramp */}
+      <section id="offramp" className="scroll-mt-20 px-4 py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <SplitHeading
-            title="Spend from the pool you own"
-            body="Your card draws from ready cash. The hook refills it from your liquidity, so you never top up by hand."
-          />
-          <Reveal delay={120}>
-            <Phone label="hooks.cards app card screen: the debit card, its status and spending settings">
-              <CardScreen />
-            </Phone>
+            eyebrow="Off-Ramp"
+            title="Crypto out. Cash in."
+            body="Convert supported Robinhood Chain assets into fiat and get paid through the apps you already use."
+          >
+          </SplitHeading>
+          <Reveal delay={100}>
+            <div className="group relative h-[520px] overflow-hidden rounded-[30px] border border-white/[0.08] lg:h-[600px]">
+              <Image
+                src={payingPhoto}
+                alt="Someone paying with their phone at a café counter"
+                fill
+                placeholder="blur"
+                sizes="(min-width: 1024px) 540px, 100vw"
+                className="object-cover transition duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/20" />
+              <div className="absolute inset-x-5 bottom-5">
+                <OfframpToast />
+              </div>
+            </div>
           </Reveal>
-          <div className="min-w-0">
-            <FeatureList items={spendList} />
-            <MerchantMarquee />
-          </div>
         </div>
       </section>
 
-      {/* The hook */}
-      <section id="hook" className="scroll-mt-20 px-4 py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_380px_1fr]">
+      {/* Shop */}
+      <section id="shop" className="scroll-mt-20 px-4 py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <SplitHeading
-            title="Guarded by code"
-            body="Earning fees doesn't need a hook. Any pool does that. The hook is what makes liquidity safe enough to back a debit card."
-          />
-          <Reveal delay={120}>
-            <Phone label="hooks.cards app hook screen: protection status for your balance">
-              <HookScreen />
-            </Phone>
+            eyebrow="Shop"
+            title={<>Shop on Amazon and eBay. <span className="text-white/45">Pay with Robinhood assets.</span></>}
+            body="Fill your cart on two of the biggest stores online and check out with crypto. Buy gift cards the same way."
+          >
+          </SplitHeading>
+          <Reveal delay={100}>
+            <ShopCards />
           </Reveal>
-          <FeatureList items={guardList} />
         </div>
       </section>
 
-      {/* How it works — gradient cards */}
-      <section id="how" className="px-4 py-24">
+      {/* Travel */}
+      <section id="travel" className="scroll-mt-20 px-4 py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          <SplitHeading
+            eyebrow="Travel"
+            title="Book hotels, pay in crypto."
+            body="Find a place to stay, compare ratings and prices, and pay for the night with crypto."
+          />
+          <Reveal delay={100}>
+            <TravelCards />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Cashback */}
+      <section id="cashback" className="scroll-mt-20 px-4 py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          <SplitHeading
+            eyebrow="Cashback"
+            title="Tokens back on every move."
+            body="For every off-ramp transaction or item you buy on Amazon or eBay, you get tokens airdropped as cashback. Those tokens count as holdings, so you become eligible for stock airdrops."
+          >
+          </SplitHeading>
+          <RowList rows={cashbackRows} />
+        </div>
+      </section>
+
+      {/* Protocol stats */}
+      <section id="stats" className="scroll-mt-20 px-4 py-24">
+        <Reveal>
+          <StatsCards />
+        </Reveal>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="scroll-mt-20 px-4 py-24">
         <Reveal className="text-center">
-          <h2 className="headline text-fade text-4xl sm:text-[52px]">One swipe. Two worlds.</h2>
+          <h2 className="headline text-fade text-4xl sm:text-[52px]">How it works</h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted sm:text-xl">
-            The swipe runs on the card network, fast and familiar. Everything around it runs
-            onchain, through the hook.
+            Three steps from tokens on Robinhood Chain to money you can use.
           </p>
         </Reveal>
         <SwipeCards />
@@ -238,51 +291,62 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="relative mt-12 overflow-hidden border-t border-white/[0.06]">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-72 bg-[radial-gradient(60%_100%_at_50%_100%,rgba(198,255,61,0.12),transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-72 bg-[radial-gradient(60%_100%_at_50%_100%,rgba(255,255,255,0.12),transparent_70%)]" />
         <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pt-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Logo />
             <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-muted">
-              A debit card backed by liquidity. A Uniswap v4 hook does the bank&apos;s job.
+              Zedkr turns Robinhood Chain assets into everyday money.
             </p>
-            <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111] px-3.5 py-2 text-[13px] text-white/70">
-              <ExchangeUniswap variant="branded" size={18} />
-              Built on Uniswap v4
+            <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111] py-1.5 pl-1.5 pr-3.5 text-[13px] text-white/70">
+              <MerchantIcon id="robinhood" size={22} />
+              Built on Robinhood Chain
             </span>
           </div>
           <div>
             <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-white/40">Explore</p>
             <ul className="mt-5 space-y-3 text-[15px]">
-              <li><a href="#card" className="text-white/75 transition hover:text-white">The Card</a></li>
-              <li><a href="#hook" className="text-white/75 transition hover:text-white">The Hook</a></li>
-              <li><a href="#how" className="text-white/75 transition hover:text-white">How it works</a></li>
+              <li><a href="#offramp" className="text-white/75 transition hover:text-white">Off-ramp</a></li>
+              <li><a href="#shop" className="text-white/75 transition hover:text-white">Shop</a></li>
+              <li><a href="#cashback" className="text-white/75 transition hover:text-white">Cashback</a></li>
+              <li><a href="#travel" className="text-white/75 transition hover:text-white">Travel</a></li>
+              <li><a href="#stats" className="text-white/75 transition hover:text-white">Stats</a></li>
             </ul>
           </div>
           <div>
             <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-white/40">Follow</p>
-            <a
-              href={X_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group mt-5 inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-[#111] py-2 pl-2 pr-4 text-[15px] text-white/80 transition hover:border-white/20 hover:text-white"
-            >
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-black">
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
-                  <path d={siX.path} />
-                </svg>
-              </span>
-              {X_HANDLE}
-            </a>
+            <ul className="mt-5 space-y-2.5">
+              {SOCIALS.map((s) => (
+                <li key={s.name}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Zedkr on ${s.name}`}
+                    className="inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-[#111] py-1.5 pl-1.5 pr-4 text-[15px] text-white/80 transition hover:border-white/20 hover:text-white"
+                  >
+                    <span
+                      className="grid h-8 w-8 place-items-center rounded-full ring-1 ring-white/10"
+                      style={{ background: s.bg, color: s.fg }}
+                    >
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" fillRule="evenodd" aria-hidden="true">
+                        <path d={s.icon} />
+                      </svg>
+                    </span>
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <p
           aria-hidden
           className="headline relative mx-auto mt-16 -mb-[0.18em] max-w-6xl select-none whitespace-nowrap bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.02)_85%)] bg-clip-text px-4 text-center text-[17vw] font-semibold leading-none text-transparent xl:text-[210px]"
         >
-          hooks.cards
+          Zedkr
         </p>
       </footer>
-
     </main>
   );
 }

@@ -2,12 +2,11 @@
 import { ImageResponse } from "next/og";
 import { MARK_PARTS } from "@/components/Logo";
 
-// 1024×1024 logo PNGs. /brand/logo?style=tile | lime | white | black
+// 1024×1024 logo PNGs. /brand/logo?style=tile | white | black
 const SIZE = 1024;
 
 const styles = {
-  tile: { bg: "linear-gradient(180deg, #2a2a2c, #111112)", fill: "#c6ff3d", inset: 0.16, rounded: true },
-  lime: { bg: "transparent", fill: "#c6ff3d", inset: 0.06, rounded: false },
+  tile: { bg: "linear-gradient(180deg, #2a2a2c, #111112)", fill: "#ffffff", inset: 0.16, rounded: true },
   white: { bg: "transparent", fill: "#ffffff", inset: 0.06, rounded: false },
   black: { bg: "transparent", fill: "#000000", inset: 0.06, rounded: false },
 } as const;

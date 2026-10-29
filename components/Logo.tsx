@@ -1,4 +1,7 @@
-// The hooks.cards mark: an "H" made of four blocks whose corners meet at one centre point.
+import Image from "next/image";
+import zedkrMark from "@/public/zedkr-logo-white.png";
+
+// The hook icon (used for hook activity in the app mockups): an "H" made of four blocks whose corners meet at one centre point.
 // The lower-right block curls into a barbed hook.
 // `shade` sets each facet's light level, so the mark reads as bevelled in any colour.
 export const MARK_PARTS: { points: string; shade: number }[] = [
@@ -18,13 +21,12 @@ export function HookMark({ className = "h-7 w-7" }: { className?: string }) {
   );
 }
 
+// Brand logo: the glossy Z (white version, for the dark site) plus the wordmark.
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <HookMark className="h-7 w-7" />
-      <span className="text-[22px] font-semibold tracking-[-0.03em]">
-        hooks<span className="text-white/45">.cards</span>
-      </span>
+      <Image src={zedkrMark} alt="" className="h-8 w-auto" priority />
+      <span className="text-[22px] font-semibold tracking-[-0.03em]">Zedkr</span>
     </span>
   );
 }
@@ -32,7 +34,7 @@ export function Logo({ className = "" }: { className?: string }) {
 // App-icon style: the mark on a dark tile.
 export function HookTile({ className = "h-12 w-12" }: { className?: string }) {
   return (
-    <span className={`grid shrink-0 place-items-center rounded-xl bg-[#1c1c1e] text-acid ${className}`}>
+    <span className={`grid shrink-0 place-items-center rounded-xl bg-[#1c1c1e] text-accent ${className}`}>
       <HookMark className="h-[62%] w-[62%]" />
     </span>
   );

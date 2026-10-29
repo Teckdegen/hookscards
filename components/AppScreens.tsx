@@ -42,7 +42,7 @@ function SquareButton({ icon: Icon, label }: { icon: typeof Send; label: string 
 function ActivePill() {
   return (
     <span className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px]" style={{ background: app.surface2 }}>
-      <span className="h-2 w-2 rounded-full bg-acid" />
+      <span className="h-2 w-2 rounded-full bg-accent" />
       Active
     </span>
   );
@@ -129,10 +129,10 @@ export function HomeScreen() {
         <div className="relative flex items-start justify-between gap-3">
           <div>
             <p className="flex items-center gap-2 text-[15px] font-medium">
-              <span className="h-2 w-2 rounded-full bg-acid" /> Hook active
+              <span className="h-2 w-2 rounded-full bg-accent" /> Hook active
             </p>
             <p className="mt-1.5 whitespace-nowrap text-[20px] font-medium" style={{ color: "#c9cbcf" }}>
-              $1.84 <span className="text-acid">earned</span>
+              $1.84 <span className="text-accent">earned</span>
             </p>
           </div>
           <div className="mt-0.5 whitespace-nowrap text-right">
@@ -141,7 +141,7 @@ export function HomeScreen() {
             </p>
             <p className="mt-1 text-[14px] font-medium">refilled by hook</p>
             <div className="mt-2.5 flex justify-end gap-1">
-              <span className="h-1.5 w-3.5 rounded-full bg-acid" />
+              <span className="h-1.5 w-3.5 rounded-full bg-accent" />
               <span className="h-1.5 w-1.5 rounded-full bg-white/25" />
             </div>
           </div>
@@ -189,7 +189,7 @@ export function CardScreen() {
       </div>
       <div className="mt-5 px-5">
         <PillButton>
-          <HookMark className="h-6 w-6 text-acid" /> Top up ready cash
+          <HookMark className="h-6 w-6 text-accent" /> Top up ready cash
         </PillButton>
       </div>
     </div>
@@ -202,7 +202,7 @@ export function HookScreen() {
     <div>
       <Header title="Hook" />
       <div className="mx-5 mt-5 flex items-center gap-4 rounded-[24px] p-4" style={panel}>
-        <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[18px] bg-acid text-black">
+        <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[18px] bg-accent text-black">
           <HookMark className="h-8 w-8" />
         </span>
         <div className="min-w-0 flex-1">
@@ -210,7 +210,7 @@ export function HookScreen() {
             The hook <ExchangeUniswap variant="branded" size={18} />
           </p>
           <p className="mt-1 flex items-center gap-1.5 whitespace-nowrap text-[14px]" style={{ color: app.muted }}>
-            <span className="h-2 w-2 rounded-full bg-acid" /> Active on Uniswap v4
+            <span className="h-2 w-2 rounded-full bg-accent" /> Active on Uniswap v4
           </p>
         </div>
         <ChevronRight className="h-5 w-5" style={{ color: app.muted }} />

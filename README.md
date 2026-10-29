@@ -1,6 +1,6 @@
-# hookscards
+# Zedkr
 
-Landing page for **hooks.cards**: a debit card backed by liquidity, not a bank account. A Uniswap v4 hook keeps the balance protected, spendable, and cheap to spend.
+Landing page for **Zedkr**. Zedkr turns Robinhood Chain assets into everyday money: off-ramp in 17+ countries, shop on Amazon and eBay, buy gift cards with crypto, book hotels, and earn tokenized stock rewards.
 
 Built with Next.js (App Router), React, TypeScript and Tailwind CSS.
 
