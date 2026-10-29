@@ -21,7 +21,7 @@ import SwipeCards from "@/components/SwipeCards";
 import GetStartedMenu from "@/components/GetStartedMenu";
 
 const SOCIALS = [
-  { label: "Twitter", href: "https://x.com/ZedkrPay" },
+  { label: "X", href: "https://x.com/ZedkrPay" },
   { label: "Telegram", href: "https://t.me/zedkrpay" },
   { label: "DEX Screener", href: "https://dexscreener.com/robinhood/0x1650ed40d8d506b9b29199e9d7e934805f4bdafa" },
 ]
