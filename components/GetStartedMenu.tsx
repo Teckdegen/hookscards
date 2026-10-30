@@ -1,12 +1,13 @@
-import { ArrowRight, ArrowUpRight, Landmark, ShoppingBag } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Landmark, Plane, ShoppingBag } from "lucide-react";
 import { MerchantIcon, type MerchantId } from "./Merchant";
 
 const apps: { label: string; sub: string; href: string; icon: typeof Landmark; logos: MerchantId[] }[] = [
   { label: "Cash", sub: "Cash out to your bank", href: "https://cash.zedkr.finance", icon: Landmark, logos: ["revolut", "chime", "zelle"] },
   { label: "Shop", sub: "Amazon and eBay with crypto", href: "https://shop.zedkr.finance", icon: ShoppingBag, logos: ["amazon", "ebay"] },
+  { label: "Travel", sub: "Book hotels with crypto", href: "https://cash.zedkr.finance/travel", icon: Plane, logos: [] },
 ];
 
-// "Get started" button that opens a menu with the Cash and Shop apps.
+// "Get started" button that opens a menu with the Cash, Shop and Travel apps.
 export default function GetStartedMenu({ variant = "nav" }: { variant?: "nav" | "hero" }) {
   const isHero = variant === "hero";
 
