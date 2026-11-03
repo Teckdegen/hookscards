@@ -233,7 +233,7 @@ export default function Home() {
           <SplitHeading
             eyebrow="Shop"
             title={<>Shop on Amazon and eBay. <span className="text-white/45">Pay with Robinhood assets.</span></>}
-            body="Fill your cart on two of the biggest stores online and check out with crypto. Buy gift cards the same way."
+            body="Fill your cart on two of the biggest stores online and check out with crypto. Buy gift cards the same way, or pick up collectible cards with Zedkr Collect."
           >
           </SplitHeading>
           <Reveal delay={100}>

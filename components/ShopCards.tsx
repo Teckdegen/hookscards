@@ -3,6 +3,7 @@ import { Gift, Truck } from "lucide-react";
 import { MerchantIcon, type MerchantId } from "./Merchant";
 import delivery from "@/public/shop/delivery.jpg";
 import checkout from "@/public/shop/checkout.jpg";
+import collect from "@/public/shop/collect.jpg";
 
 // Photos from Unsplash; store logos sit on top.
 const stores: { id: MerchantId; name: string; line: string; photo: StaticImageData }[] = [
@@ -15,7 +16,7 @@ const extras = [
   { icon: Truck, title: "Free shipping", line: "On eligible items" },
 ];
 
-// The two stores as photo cards, with gift cards and shipping beneath.
+// The two stores and Zedkr Collect as photo cards, with gift cards and shipping beneath.
 export default function ShopCards() {
   return (
     <div className="grid grid-cols-2 gap-3">
@@ -42,6 +43,25 @@ export default function ShopCards() {
           </div>
         </div>
       ))}
+      {/* Zedkr Collect: trading cards, full width under the stores */}
+      <div className="group relative col-span-2 min-h-[220px] overflow-hidden rounded-[26px] border border-white/[0.08]">
+        <Image
+          src={collect}
+          alt=""
+          fill
+          placeholder="blur"
+          sizes="(min-width: 1024px) 560px, 100vw"
+          className="object-cover transition duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+        <span className="absolute left-4 top-4 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-black">New</span>
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <p className="text-2xl font-semibold tracking-tight">Zedkr Collect</p>
+          <p className="mt-1 max-w-md text-[13px] text-white/70">
+            Collectible cards from Pokémon, One Piece, Magic, Yu-Gi-Oh!, sports, Lorcana, Star Wars and more.
+          </p>
+        </div>
+      </div>
       {extras.map(({ icon: Icon, title, line }) => (
         <div key={title} className="flex items-center gap-3.5 py-2">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/[0.06]">

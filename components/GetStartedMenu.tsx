@@ -3,7 +3,7 @@ import { MerchantIcon, type MerchantId } from "./Merchant";
 
 const apps: { label: string; sub: string; href: string; icon: typeof Landmark; logos: MerchantId[] }[] = [
   { label: "Cash", sub: "Cash out to your bank", href: "https://cash.zedkr.finance", icon: Landmark, logos: ["revolut", "chime", "zelle"] },
-  { label: "Shop", sub: "Amazon and eBay with crypto", href: "https://shop.zedkr.finance", icon: ShoppingBag, logos: ["amazon", "ebay"] },
+  { label: "Shop", sub: "Amazon, eBay and collectible cards", href: "https://shop.zedkr.finance", icon: ShoppingBag, logos: ["amazon", "ebay"] },
   { label: "Travel", sub: "Book hotels with crypto", href: "https://cash.zedkr.finance/travel", icon: Plane, logos: [] },
 ];
 
