@@ -1,7 +1,5 @@
 import {
-  Gift,
   Landmark,
-  Plane,
   ShoppingBag,
   TrendingUp,
   Wallet,
@@ -19,6 +17,7 @@ import TravelCards from "@/components/TravelCards";
 import StatsCards from "@/components/StatsCards";
 import SwipeCards from "@/components/SwipeCards";
 import GetStartedMenu from "@/components/GetStartedMenu";
+import FeatureCards from "@/components/FeatureCards";
 
 const SOCIALS = [
   { label: "X", href: "https://x.com/ZedkrPay" },
@@ -38,13 +37,6 @@ const glyphs = (() => {
     d: rand() * 5,
   }));
 })();
-
-const features = [
-  { icon: Landmark, title: "Cash out", body: "Send your crypto to Chime, Revolut, Zelle, Monzo or Mercado Pago as everyday money." },
-  { icon: ShoppingBag, title: "Shop", body: "Check out on Amazon and eBay and pay with your Robinhood assets." },
-  { icon: Gift, title: "Gift cards", body: "Buy gift cards with crypto, ready to use or send to someone." },
-  { icon: Plane, title: "Travel", body: "Book hotels for your next trip and pay with crypto." },
-];
 
 type Row = { logo?: MerchantId; icon?: typeof Wallet; title: string; sub: string };
 
@@ -185,18 +177,9 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* Overview stage + features */}
+      {/* Features */}
       <section className="px-4 pb-24">
-
-        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-x-5 gap-y-10 sm:mt-20 sm:gap-10 lg:grid-cols-4">
-          {features.map(({ icon: Icon, title, body }, i) => (
-            <Reveal key={title} delay={i * 100}>
-              <Icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={1.5} />
-              <h3 className="mt-4 text-lg font-medium tracking-tight sm:mt-8 sm:text-xl">{title}</h3>
-              <p className="mt-1.5 text-[14px] leading-relaxed text-muted sm:mt-2 sm:text-base">{body}</p>
-            </Reveal>
-          ))}
-        </div>
+        <FeatureCards />
       </section>
 
       {/* Off-ramp */}
