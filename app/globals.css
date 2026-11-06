@@ -100,6 +100,26 @@ body {
 
 .slow-zoom { animation: slow-zoom 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
+/* Feature card motion */
+@keyframes flow-down {
+  0%, 100% { opacity: 0.15; transform: translateY(-2px); }
+  50% { opacity: 1; transform: translateY(2px); }
+}
+.flow-down { animation: flow-down 1.4s ease-in-out infinite; }
+
+@keyframes drift {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+.drift { animation: drift 16s linear infinite; }
+
+@keyframes ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.12); }
+}
+.ken-burns { animation: ken-burns 14s ease-in-out infinite alternate; }
+
 /* Scroll reveal, toggled by <Reveal> */
 .reveal {
   opacity: 0;
@@ -113,6 +133,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise, .twinkle, .toast-in, .float, .slow-zoom { animation: none; }
+  .rise, .twinkle, .toast-in, .float, .slow-zoom, .flow-down, .drift, .ken-burns { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
